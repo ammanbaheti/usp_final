@@ -1,0 +1,28 @@
+#include<stdio.h> 
+#include<stdlib.h> 
+#include<fcntl.h> 
+#include<unistd.h> 
+#include<sys/stat.h> 
+#include<sys/types.h>
+
+int main(int argc,char *argv[]){
+	struct stat fs;
+
+	struct utimebuf new;
+	 if(stat(argv[1],&fs)<0){
+		 perror("Stat:");
+		 exit(-1);
+	 }
+
+	 new.actime=fs.st_atime;
+	 new.modtime=fs.st_mtime;
+
+
+	 if(utime(argv[2],&new)<0){
+		 perror("utime");
+		 exit(-1);
+	 }
+	 return 0;
+	 close(fs);
+}
+
